@@ -1,16 +1,8 @@
-function flatten(array) {
-  const result = [];
-  for (let i = 0; i < array.length; i++) {
-    if (Array.isArray(array[i])) {
-      let flat = flatten(array[i]);
-      for (let j = 0; j < flat.length; j++) {
-        result.push(flat[j]);
-      }
-    } else {
-      result.push(array[i]);
-    }
-  }
-  return result;
+function removeDupes(string) {
+  return Array.from(new Set(string)).join("");
 }
 
-console.log(flatten([[1], [2, 3], [[4]]])); // -> [1,2,3,4]
+console.log(removeDupes("abcd")); // -> 'abcd'
+console.log(removeDupes("aabbccdd")); // -> 'abcd'
+console.log(removeDupes("abcddcba")); // -> 'abcd'
+console.log(removeDupes("abababcdcdcd")); // -> 'abcd'
