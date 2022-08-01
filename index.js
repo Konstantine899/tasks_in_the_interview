@@ -1,31 +1,52 @@
-function isBalanced(string) {
-  const start = "{[(";
-  const end = "}])";
+class LinkedList {
+  #length = 0; // длинна списка
+  #head;
+  #tail;
 
-  const map = {
-    "}": "{",
-    "]": "[",
-    ")": "(",
-  };
-
-  const queue = [];
-
-  for (let i = 0; i < string.length; i++) {
-    const char = string[i];
-    if (start.includes(char)) {
-      queue.push(char);
-    } else if (end.includes(char)) {
-      const last = queue.pop();
-      if (map[char] !== last) {
-        return false;
-      }
+  addToTail(value) {
+    const node = {
+      value: value, // ключ значение
+      next: null, // указывает на следующий элемент. По умолчанию null
+    };
+    if (this.#length === 0) {
+      this.#head = node;
+      this.#tail = node; // т.е. если один элемент, то он является как началом так и концом
+    } else {
+      this.#tail = node; // иначе добавляем элемент в конец
     }
+    this.#length++; // переходим на следующий index
   }
-  return !queue.length;
+
+  removeFromHead() {
+    if (this.#length === 0) return;
+    const value = this.#head.value;
+    this.#head = this.#head.next;
+    this.#length--;
+    return value;
+  }
+
+  size() {
+    return this.#length;
+  }
 }
 
-console.log(isBalanced("(x + y) - (4)")); // -> true
-console.log(isBalanced("(((10 ) ()) ((?)(:)))")); // -> true
-console.log(isBalanced("[{()}]")); // -> true
-console.log(isBalanced("(50)(")); // -> false
-console.log(isBalanced("[{]}")); // -> false
+class Queue extends LinkedList {
+  constructor() {
+    super();
+    this.enqueue = this.addToTail;
+    this.dequeue = this.removeFromHead;
+  }
+
+  get size() {
+    return super.size();
+  }
+}
+
+const queue = new Queue();
+queue.enqueue(1);
+queue.enqueue(2);
+queue.enqueue(3);
+
+queue.dequeue();
+
+console.log(queue.size);
