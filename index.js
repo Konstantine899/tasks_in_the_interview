@@ -1,7 +1,19 @@
-function isStringRotated(source, test) {
-  return (source + source).includes(test) && source.length === test.length;
+function arraySubset(source, subset) {
+  if (source.length < subset.length) {
+    return false;
+  }
+  for (let i = 0; i < subset.length; i++) {
+    const index = source.indexOf(subset[i]); // если index элемента не найден то возвращает -1
+    if (index === -1) {
+      return false;
+    } else {
+      delete source[index];
+    }
+  }
+  return true;
 }
 
-console.log(isStringRotated("javascript", "scriptjava")); // -> true
-console.log(isStringRotated("javascript", "iptjavascr")); // -> true
-console.log(isStringRotated("javascript", "java")); // -> false
+console.log(arraySubset([2, 1, 3], [1, 2, 3])); // true
+console.log(arraySubset([2, 1, 1, 3], [1, 2, 3])); // true
+console.log(arraySubset([1, 1, 1, 3], [1, 3, 3])); // false
+console.log(arraySubset([1, 2], [1, 2, 3])); // false
