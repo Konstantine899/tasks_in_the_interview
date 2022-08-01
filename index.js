@@ -1,43 +1,19 @@
-const matrix = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-];
+function search(array, target) {
+  let step = 1;
+  let start = 0;
+  let end = array.length - 1;
+  let middle = null;
 
-/*
- * 0:0 0:1 0:2     0:2 1:2 2:2
- * 1:0 1:1 1:2  -> 0:1 1:1 2:1
- * 2:0 2:1 2:2     0:0 1:0 2:0
- * */
-
-function rotate(source) {
-  const rotated = source[0].map((_) => []);
-
-  for (let i = 0; i < source.length; i++) {
-    for (let j = 0; j < source[i].length; j++) {
-      const value = source[i][j];
-      rotated[j][source.length - 1 - i] = value;
-    }
+  while (start <= end) {
+    middle = Math.round((start + end) / 2);
+    let result = array[middle];
+    if (result === target) return { middle, step };
+    if (result > target) end = middle - 1;
+    if (result < target) start = middle + 1;
+    step++;
   }
-  return rotated;
+  return -1;
 }
 
-function rotate180(source) {
-  return rotate(rotate(source));
-}
-
-function rotate270(source) {
-  return rotate(rotate180(source));
-}
-
-//helper function
-function print(array) {
-  array.forEach((i) => console.log(i));
-}
-
-print(rotate(matrix));
-console.log("--------------");
-print(rotate180(matrix));
-console.log("--------------");
-
-print(rotate270(matrix));
+console.log(search([1, 3, 6, 13, 17], 13)); // -> 3
+console.log(search([1, 3, 6, 13, 17], 12)); // -> -1
