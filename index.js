@@ -1,15 +1,37 @@
-const fibonacci = (function fibonacci() {
-  const sequence = [1, 1]; // зарезервированные значения
-  return function (n) {
-    if (sequence.length >= n) return sequence.slice(0, n);
-    while (sequence.length < n) {
-      const last = sequence[sequence.length - 1];
-      const prev = sequence[sequence.length - 2];
-      sequence.push(last + prev);
-    }
-    return sequence;
-  };
-})();
+// const person = {
+//   name: "Константин",
+// };
+//
+// function info(phone, email) {
+//   console.log(`Имя: ${this.name}, Тел: ${phone}, Email:${email}`);
+// }
+//
+// //3. ES5
+// function bind(fn, context, ...rest) {
+//   return function (...args) {
+//     return fn.apply(context, rest.concat(args));
+//     // или же через call
+//     // return fn.call(context, ...rest.concat(args));
+//   };
+// }
+//
+// bind(info, person)("111", "222");
+// bind(info, person, "111")("222");
+// bind(info, person, "111", "222")();
 
-console.log(fibonacci(8)); // ->[1,1,2,3,5,8,13,21]
-console.log(fibonacci(10)); // ->[1,1,2,3,5,8,13,21]
+const person = {
+  name: "Константин",
+};
+
+function info(phone, email) {
+  console.log(`Имя: ${this.name}, Тел: ${phone}, Email:${email}`);
+}
+
+function call(fn, context, args) {
+  const uniqId = Date.now().toString();
+  context[uniqId] = fn;
+  const result = context[uniqId](...args);
+  delete context[uniqId];
+  return result;
+}
+call(info, person, ["111", "222"]); // не вызываю функцию потому что метод apply сразу же ее вызывает
