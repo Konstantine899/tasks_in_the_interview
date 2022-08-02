@@ -1,25 +1,15 @@
-function deepEqual(a, b) {
-  //проверка NaN
-  if (Number.isNaN(a) && Number.isNaN(b)) return true;
-  // Проверка на тип
-  if (typeof a !== typeof b) return false;
+const fibonacci = (function fibonacci() {
+  const sequence = [1, 1]; // зарезервированные значения
+  return function (n) {
+    if (sequence.length >= n) return sequence.slice(0, n);
+    while (sequence.length < n) {
+      const last = sequence[sequence.length - 1];
+      const prev = sequence[sequence.length - 2];
+      sequence.push(last + prev);
+    }
+    return sequence;
+  };
+})();
 
-  //Проверка для объектов
-  if (typeof a !== "object" || a === null || b === null) return a === b;
-  //Проверка количества ключей в объекте
-  if (Object.keys(a).length !== Object.keys(b).length) return false; //Object.keys(a) возвращает массив
-  //Проверка вложенных значений объектов
-  for (const key of Object.keys(a)) {
-    if (!deepEqual(a[key], b[key])) return false; // использую рекурсию в которую передаю ключи объекта. ВСЯ СУЬ В ЭТОЙ СТРОЧКЕ!!!!
-  }
-  return true;
-}
-
-const source = { a: 1, b: { c: 1 } };
-const test1 = { a: 1, b: { c: 1 } };
-const test2 = { a: 1, b: { c: 2 } };
-console.log(deepEqual(source, test1)); // true
-console.log(deepEqual(source, test2)); // false
-console.log(deepEqual(NaN, NaN)); // true
-console.log(deepEqual("test", "test!")); // false
-console.log(deepEqual()); // true
+console.log(fibonacci(8)); // ->[1,1,2,3,5,8,13,21]
+console.log(fibonacci(10)); // ->[1,1,2,3,5,8,13,21]
